@@ -41,16 +41,17 @@
 
     <section class="main-content">
 <h1 id="playing-starcraft-ii-with-reinforcement-learning">Playing StarCraft II with Reinforcement Learning</h1>
-<p>StarCraft2 Swaggers:</p>
+<p>StarCraft2 Swaggers</p>
 <img src="Team2.jpg" alt="he" />
 <table>
     <tr>
+      <td >" "</td>
       <td >Dolly Ye</td>
       <td >Shraddha Agrawal</td>
       <td >Aria Chang</td>
       <td >Axel A Hernandez</td>
   
-      <td >Rhys Li</td>
+      <td >Rhys Li(not here)</td>
     </tr>
 </table>
 
@@ -132,7 +133,7 @@ The two important components of the envrionment are:
 <h3 id="objectives">Objectives</h3>
 
 <p style="text-align: justify">
-In Starcraft 2, no matter how good you are at combat or economy maximization, you cannot win a game without judicious selection of units, structures and buildings. We want to tackle the problem of build order optimization in StarCraft2. Concretely, build order consists of finding concurrent action sequences constrained by unit dependencies and resource availability, such as creating a certain number of units and structures in the shortest amount of time possible.
+In Starcraft 2, no matter how good you are at combat or economy maximization, you cannot win a game without judicious selection of units, structures and buildings. We want to tackle the problem of build order optimization. Concretely, build order consists of finding concurrent action sequences constrained by unit dependencies and resource availability, such as creating a certain number of units and structures in the shortest amount of time possible.
 
 </p>
 
@@ -171,29 +172,25 @@ Essential Algorithms:
   Q-learning agent seeks to maximize its total (future) reward by adding the maximum expected reward attainable from the future state to the reward in its current state.
 
 
-Here are some implementations of Q-learning agents: <a href="https://chatbotslife.com/building-a-smart-pysc2-agent-cdc269cb095d"> Steven Brown's</a> and <a href="https://github.com/MorvanZhou/PyTorch-Tutorial/tree/master/tutorial-contents-notebooks"> Morvan Zhou's </a></p>
+<p style="text-align: justify">Here are some implementations of Q-learning agents: <a href="https://chatbotslife.com/building-a-smart-pysc2-agent-cdc269cb095d"> Steven Brown's</a> and <a href="https://github.com/MorvanZhou/PyTorch-Tutorial/tree/master/tutorial-contents-notebooks"> Morvan Zhou's </a>.</p></p>
 
 <h3 id="a3c">Deep Q-Network</h3>
 
 <p style="text-align: justify">
 
 
-    DQN's main innovation over Q-learning:  It has two separate networks: an action network and a target network. The action network selects action, its parameters are trainable.The target network is a history version of the action network, its parameters are untrainable. It is updated infrequently– every C steps.The target network computes the loss for every action during training.
+    DQN's main innovation over Q-learning is that it has two separate networks: an action network and a target network. The action network selects action, its parameters are trainable.The target network is a history version of the action network, its parameters are untrainable. It is updated infrequently– every C steps.The target network computes the loss for every action during training.
     Why not use just use one network for both estimations? The issue is that at every step of training, the Q-network’s values shift, and if we are using a constantly shifting set of values to adjust our network values, then the value estimations can easily spiral out of control.  In order to make training more stable, the target network’s weights are fixed, and only periodically or slowly updated to the primary Q-networks values.
 
 
 
-Check out this tutorial on   <a href="https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html"> how to use PyTorch to train a DQN agent </a>.  
-</p>
+<p style="text-align: justify">Check out this tutorial on   <a href="https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html"> how to use PyTorch to train a DQN agent </a>.  
+</p></p>
 
 
-<h4 id="theoretical-foundations">Theoretical Foundations</h4>
+<h4 id="theoretical-foundations">From Q-Learning to DQN</h4>
 
 
-
-<p style="text-align: justify">
-Unlike policy gradient methods, which attempt to learn functions which directly map an observation to an action, <strong>Q-Learning </strong>attempts to learn the value of being in a given state, and taking a specific action there.
-</p>
 
 <p style="text-align: justify">
  Q-Learning is a table of values for every state (row) and action (column) possible in the environment. Within each cell of the table, we learn a value for how good it is to take a given action within a given state. We start by initializing the table to be uniform (all zeros), and then as we observe the rewards we obtain for various actions, we update the table accordingly. our Q-table using something called the Bellman equation, which states that the expected long-term reward for a given action is equal to the immediate reward from the current action combined with the expected reward from the best future action taken at the following state.
@@ -227,7 +224,7 @@ The transition is depicted here:
 <h3 id="objective">Objective</h3>
 
 <p style="text-align: justify">
-It is our objective to experiment with Reinforcement Learning techniques and analyze their suitability for Build order optimization in the StarCraft II game. We focused on building mini-game for build order of terrans. Our approach was inspried by Atari net. 
+Inspired by Atari-Net, Our project addresses build order problem with a reinforcement learning approach. 
 </p>
 
 <p align="center">
@@ -237,7 +234,7 @@ It is our objective to experiment with Reinforcement Learning techniques and ana
   Fig. 3: Atari-Net. Source [1].
 </p>
 
-<p style="text-align: justify"> Our initial project proposal focused on using reinforcement learning to optimize the problem of build-order optimization in the game of StarCraft II. Throughout the quarter, we experimented with different approaches to achieve some results that no other existing published bot has achieved. Given the time and resources we have available, our definition of success rested on the fact that our bot could beat the easy built-in StarCraft II AI on a minimap while running terran against a fixed race. After a quarter of trial and error, we obtained substantial results by improving the <a href="https://chatbotslife.com/building-a-basic-pysc2-agent-b109cde1477c">refined agent </a> published by Steven Brown. 
+<p style="text-align: justify"> Our initial project proposal focused on using reinforcement learning to optimize the problem of build-order optimization in the game of StarCraft II. Throughout the quarter, we experimented with different approaches to achieve some results that no other existing published bot has achieved. Given the time and resources we have available, our definition of success rested on the fact that our bot could beat the easy built-in StarCraft II AI on a minimap while running Terran against a fixed race. After a quarter of trial and error, we obtained substantial results by improving the <a href="https://chatbotslife.com/building-a-basic-pysc2-agent-b109cde1477c">refined agent </a> published by Steven Brown. 
 </p>
 
 <h3 id="initial-set-up-and-results">Our agents</h3>
@@ -309,8 +306,10 @@ Overall, it was a fun and challenging project to learn about artificial intellig
  </p> 
 
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/i_WQFI7Qol0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
 <h3 id="example-video-of-a-trained-agent">Example video of a trained agent</h3>
-<p><a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=uMiJt4UcZyo " target="_blank"><img align="center" src="http://img.youtube.com/vi/uMiJt4UcZyo/0.jpg" alt="RL Agents" width="240" height="180" border="10" /></a></p>
+<p><a href="https://www.youtube.com/embed/i_WQFI7Qol0 " target="_blank"><img align="center" src="http://img.youtube.com/vi/uMiJt4UcZyo/0.jpg" alt="RL Agents" width="240" height="180" border="10" /></a></p>
 
 <h2 id="references">References</h2>
 

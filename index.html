@@ -249,10 +249,7 @@ Refined agent uses the PySC2 AI environment for an RL agent using a Q-Table from
 </p>
 
 <p align="center">
-  <img src="images/dm_vs_hu180k.png" width="900" alt="" />
-  <br />
-  <br />
-  Fig. 4: (Left) Results after 7 days of training vs (Right) DeepMind results. At the right hand side, the colors represent: (1) Light red, Atari-Net; (2) Light blue, Fully Conv.; (3) Dark blue, Fully Conv. with LSTM.
+  <img src="agent1.png" width="500" alt="Agent2" />
 </p>
 
 
@@ -270,12 +267,12 @@ A highlight of DQN is the usage of experience replay. We created a replay memory
 </p>
 
 <p align="center">
-  <img src="agen2M.png" width="900" alt="Agent2" />
+  <img src="agen2M.png" width="500" alt="Agent2" />
 </p>
 
 
 <p align="center">
-  <img src="agent2.png" width="900" alt="Agent2" />
+  <img src="agent2.png" width="500" alt="Agent2" />
 </p>
 
 
@@ -285,31 +282,26 @@ A highlight of DQN is the usage of experience replay. We created a replay memory
 
 
 
-<h2 id="results-and-conclusions">Results and Conclusions</h2>
+<h2 id="results-and-conclusions">Journey</h2>
 
-<p style="text-align: justify">
-Due to constraint of time and resources, we were not achieved Deep Mind's performance. We focused more on reading research paper, learning about RL agorithms, doing tutorials rather than constructing new techniques from beginning.  
-</p>
-
-<h2> Journey </h2>
 <p style="text-align: justify"> In the quater long project, we came across several challenges and new ideas. This is a brief of our journey: One of our original course of actions was to use parsed replay data to train the agent using NNs to learn strategies. It would intake information about the state and output abstracted actions that the agent would perform. However, that was not realistic because we faced troubles parsing the data in the right way. Primarily, the initial data set of raw replays we found, the SC2LE dataset, was not encoded correctly for the updated version of SC2. Using sc2reader, we were able to correctly parse replay data only for raw replays that were saved before early 2016. We were able to collect slightly over 1,000 parsed replays amongst all 3 races using the sc2reader library. This however, took a huge portion of our time, and once we started working on implementing the NN it was already week 6. Due to the time constraint and the fact that we lacked a working agent, we did not have a concrete plan of how to map the actions returned by the replay data and those of the agent. At this point we decided to split the work, where some of us continued to implement a NN, while others began implementing a DQN implementation. 
 With the NN, we decided to make it Recurrent given the idea that an agent should learn what to do at specific states in the game based on previous states that happened. We tried to implement an LSTM RNN using Pytorch and also Tensorflow, but we ran into trouble when dealing with the dimensionality of the input since we had data that all had different number of states, ranging from 100 states in the game to 5000 states. We tried methods such as batching the data and padding the states with 0’s in order to input the same size of states per batch. We reached the point where the RNN was capable of producing a forward pass but unable to correctly perform  back propagation. Unfortunately, this was very late in the quarter (week 8) and our DQN implementation was working better, but still not fully. So in order to finish before the given deadline, we had to drop the RNN and focus all our efforts on finishing the agent using Q-Table, until we managed to get it to work. The time we had left to train it however, was not enough for it to learn fully. 
 
 </p>
+<h2 id="results-and-conclusions"> Results </h2>
+<p style="text-align: justify">
 
+Due to constraint of time and resources, we were not achieved Deep Mind's performance. We focused more on reading research paper, learning about RL agorithms, doing tutorials rather than constructing new techniques from beginning.  
+</p>
 
 <p style="text-align: justify">
 Overall, it was a fun and challenging project to learn about artificial intelligence. In the future, we plan to continue researching this field and learn more about it. 
-</p>
-<p>This project was developed during the <a href="https://github.com/dr-jam/ECS170">ECS 170:Artificial Intelligence</a> Course at UC Davis, Spring 2018.</p>
-<pstyle="text-align: justify"> Thank you <a href="https://faculty.engineering.ucdavis.edu/mccoy/">Professor Josh McCoy</a> for giving us a great introduction to world of AI. 
+This project was developed during the <a href="https://github.com/dr-jam/ECS170">ECS 170:Artificial Intelligence</a> Course at UC Davis, Spring 2018.
+Thank you <a href="https://faculty.engineering.ucdavis.edu/mccoy/">Professor Josh McCoy</a> for giving us a great introduction to world of AI. 
  </p> 
 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/i_WQFI7Qol0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-<h3 id="example-video-of-a-trained-agent">Example video of a trained agent</h3>
-<p><a href="https://www.youtube.com/embed/i_WQFI7Qol0 " target="_blank"><img align="center" src="http://img.youtube.com/vi/uMiJt4UcZyo/0.jpg" alt="RL Agents" width="240" height="180" border="10" /></a></p>
 
 <h2 id="references">References</h2>
 
@@ -323,7 +315,7 @@ Overall, it was a fun and challenging project to learn about artificial intellig
 
 
     </section>
-
+<p> This website was inspired by <a href="https://telecombcn-dl.github.io/2017-dlai-team5/"> DLAI team</a>
     
   </body>
 </html>

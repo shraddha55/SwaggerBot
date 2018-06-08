@@ -279,7 +279,29 @@ A highlight of DQN is the usage of experience replay. We created a replay memory
 
 <h2 id="next-step-hacking-the-reward">Evaluation</h2>
 
+<h2><a href="https://github.com/okdolly/SwaggerBot-StarCraft2/blob/master/comprehensiveAgent/SWARMBOT/supremebot.py">Supreme Bot</a></h2>
 
+
+<p style="text-align: justify">
+With two the additional actions, “build reactors” and “build tech labs”, after running 97 episodes, we obtained the following results. After adding all the actions in to the agent, we are able to get data that more accurately reflects the learning process of the agent. With this final bot, we made improvements and solved most of the issues listed in our previous model. In SupremeBot 2.0, the game runs much faster and the win rate steadily increases as the loss rate decreases at a steeper slope compared to the win rate in this bot and the loss rate in the previous bot. Due to time sensitivity, we are not able to run more episodes, but we expect that after around 300 more games of learning, SupremeBot will beat the result achieved by Steven Brown’s refined agent. We will continue improving on this model and document our findings and source codes on github. Once we obtain enough substantial success, we will work on a research paper to publish our results in an academic setting.
+</p>
+
+<p align="center">
+  <img src="agent1result.png" width="500" alt="Agent2" />
+</p>
+
+
+<h2><a href="https://github.com/okdolly/SwaggerBot-StarCraft2/blob/master/pytorch_dqn_agent/dqn-move-agent.py">DQN Bot</a></h2>
+
+<p align="center">
+  <img src="DQN-result" width="500" alt="Agent2" />
+</p>
+
+<p style="text-align: justify">
+ The result was unsatisfactory due to the limited number of actions we were able to hard-code so far. Improvements can be made in two main directions:
+Cherry-pick important and decorrelated observation about game state and feed them into the ‘state’ tensor.
+ Hard-code more actions that are in sensible order.
+</p>
 
 
 <h2 id="results-and-conclusions">Journey</h2>

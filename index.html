@@ -46,7 +46,6 @@
 <img src="Team2.jpg" alt="he" />
 <table>
     <tr>
-      <td></td>
       <td >Shraddha Agrawal</td>
       <td >Aria Chang</td>
       <td >Axel A Hernandez</td>
@@ -224,34 +223,28 @@ The transition is depicted here:
 <h3 id="objective">Objective</h3>
 
 <p style="text-align: justify">
-It is our objective to experiment with Reinforcement Learning techniques and analyze their suitability for the StarCraft II game. We bound our scope to one of the mini-games from the Deep Mind's suite: Find and Destroy Zerglings. We believe that a top performer player for this game should display a good balance between exploration and combat skills. As for the algorithm, as previously said, we use A3C, encoding the policy with AtariNet [5] (Fig. 3).
+It is our objective to experiment with Reinforcement Learning techniques and analyze their suitability for Build order optimization in the StarCraft II game. We focused on building mini-game for build order of terrans. Our approach was inspried by Atari net. 
 </p>
 
 <p align="center">
-  <img src="images/Atari-net.png" width="400" alt="" />
+  <img src="Atari-net.png" width="400" alt="" />
   <br />
   <br />
   Fig. 3: Atari-Net. Source [1].
 </p>
 
-<p style="text-align: justify">
-The chosen mini-games consists in hunting down Zerglings on a small map using exclusively 3 marines. The position of the Zerglings is unknown a priori, so the player has to explore the map in order to find them. One of the main challenges of this mini-game is that initially there are 19 Zerglings, and enemies respawn only when the previous wave has been cleared. This means that as the episode progresses and the marines kill Zerglings, it gets increasingly difficult to find the next one. We will see that this has a serious impact in the performance of the agent.
+<p style="text-align: justify"> Our initial project proposal focused on using reinforcement learning to optimize the problem of build-order optimization in the game of StarCraft II. Throughout the quarter, we experimented with different approaches to achieve some results that no other existing published bot has achieved. Given the time and resources we have available, our definition of success rested on the fact that our bot could beat the easy built-in StarCraft II AI on a minimap while running terran against a fixed race. After a quarter of trial and error, we obtained substantial results by improving the <a href="https://chatbotslife.com/building-a-basic-pysc2-agent-b109cde1477c">refined agent </a> published by Steven Brown. 
 </p>
 
-<h3 id="initial-set-up-and-results">Initial set-up and results</h3>
+<h3 id="initial-set-up-and-results">Our agents</h3>
+
+<h2><a href="https://github.com/okdolly/SwaggerBot-StarCraft2/blob/master/comprehensiveAgent/SWARMBOT/supremebot.py">Supreme Bot</a></h2>
+
 
 <p style="text-align: justify">
-In order to get some sort of tentative results we executed the Hu's implementation in a Google Cloud server for 7 days, with the following specifications:
-</p>
+Refine agent uses the PySC2 AI environment for an RL agent using a Q-Table from having a win rate of less than 20% to, eventually, a win rate of over 70%. We delineated from the other choices of ML models and resorted to building a comprehensive agent that learns as it plays against the built-in AI in real time. Compared to the refined agent which Steven Brown uses to achieve the 70%+ win rate, our agent uses the Q-Table actions of building tech lab, which allows production units to build advanced army units, and reactors, which “ lengthens the build queue by three slots and allows two units to be built simultaneously” (starcraft wikia). 
 
-<ul>
-  <li>2 K80 GPUs</li>
-  <li>4 virtual cores</li>
-  <li>10GB of RAM</li>
-</ul>
 
-<p style="text-align: justify">
-The results were kind of underwhelming: we managed to simulate just around 180000 episodes, stalling at an accumulated reward around 20. At this point, it is important to highlight the fact that this reward is very hard to surpass because of the strict respawn rules imposed by the mini-game. Moreover, it is very difficult to train for this kind of scenarios under the no-memory assumption adopted by Markov Decision Processes (MDP), the underlying mathematical formalism in which RL is based on (although DeepMind has also used LSTMs in one of their network, overcoming this issue up to certain extend but moving away from the theoretical guarantees provided by MDPs). Of course, as shown by DeepMind's results, the agent can develop an effective strategy for exploring this map even under the no memory assumption. Fig. 4 shows a comparative between our results and theirs. One of the main facts that can be inferred from this chart is that DeepMind has spent a very high amount of resources in obtaining such good results. Our results are too far from this level of performance, but then again, we cannot afford 600M of simulations.
 </p>
 
 <p align="center">
@@ -261,69 +254,57 @@ The results were kind of underwhelming: we managed to simulate just around 18000
   Fig. 4: (Left) Results after 7 days of training vs (Right) DeepMind results. At the right hand side, the colors represent: (1) Light red, Atari-Net; (2) Light blue, Fully Conv.; (3) Dark blue, Fully Conv. with LSTM.
 </p>
 
+
+
+<h2><a href="https://github.com/okdolly/SwaggerBot-StarCraft2/blob/master/pytorch_dqn_agent/dqn-move-agent.py">DQN Bot</a></h2>
+
+
 <p style="text-align: justify">
-Interestingly enough, it is possible to observe that even in some of the configurations employed by DeepMind (namely the one with LSTM and AtariNet) they still experience the same issue with the plateau around 20 at the begining of the training. After 100M of episodes the results remain fairly stable.
+PYSC2 api provides critical information, such as reward and episode,  an agent gets after performing an action, which makes DQN especially suitable for the task. A Starcraft RL agent observes the current state of the environment and chooses an action, the environment transitions to a new state, and also returns a reward that indicates the consequences of the action.  We encode six pieces of information as our state: whether the player can move, where the player is located, supply depot count,barracks count, supply limit and army supply.We passed the state into the neural network, which, after training, would return an action that yields the highest expected reward. 
+
 </p>
 
 <p style="text-align: justify">
-The main conclusion we draw from this is that training for Reinforcement Learning is very expensive, both in terms of time and money:
-</p>
-
-<ul>
-  <li>We have estimated that we were simulating near to 26000 episodes per day. At this pace, we would need more than 23000 days (more than 60 years) to complete 600M of episodes (or 10 years for just 100M).</li>
-  <li>On the other hand, the estimate of the cost of such training is around $643,963 (Google Cloud fees: $1.15 per hour).</li>
-</ul>
-
-<h2 id="next-step-hacking-the-reward">Next step: hacking the reward</h2>
-
-<p style="text-align: justify">
-We introduced domain specific knowledge as follows:
-</p>
-
-<ul>
-  <li>We keep track of the minimum distance from the marines to the Zerglings. Each time this distance increases, we add a small penalty (negative reward) to discourage the marines from fleing, and add a small positive reward when they approach an enemy.</li>
-  <li>We believe that correctly managing the camera movements greatly influences the performance of the game, since having it centered in the region of interest (the region where most visible units are located) we increase the chance of hitting the right actions. The rationale is that there are actions for moving and attacking both in the minimap and in the main screen, and if the marines and Zerglings are outside the region covered by the camera, only the actions performed in the minimap are useful for killing Zerglings. For this reason, we add a small reward when the visible region covered by the camera increases after a camera movement.</li>
-</ul>
-
-<p style="text-align: justify">
-We can see at Fig. 5 that this has indeed a positive effect in the learning speed of the agent. However, we are not sure of the long term effects if we left the algorithm running for more time.
+A highlight of DQN is the usage of experience replay. We created a replay memory class that  stores sequences of state, action, next state, and rewards that the agent observes. By sampling from the replay memory randomly, the transitions that build up a batch are decorrelated. It has been shown that this greatly stabilizes and improves the DQN training procedure. The magic of DQN happens inside the ‘optimize’ method, which performs a single step of the optimization. It first samples a batch, concatenates all the tensors into a single one, computes Q(st,at) and V(st+1)=maxaQ(st+1,a), and combines them into our loss. Aside from the neural network, we hard-coded 9 actions and conditions to perform certain action into the DQN bot.
 </p>
 
 <p align="center">
-  <img src="images/Comparison_GPU.png" width="500" alt="" />
+  <img src="images/dm_vs_hu180k.png" width="900" alt="" />
   <br />
   <br />
-  Fig. 5: Agent that uses modified ("hacked") rewards vs original agent. Of course, for the sake of comparing both executions in fair conditions only the original rewards (the ones given originally by the environment) are shown. The modified rewards are used internally to update the network.
+  Fig. 4: (Left) Results after 7 days of training vs (Right) DeepMind results. At the right hand side, the colors represent: (1) Light red, Atari-Net; (2) Light blue, Fully Conv.; (3) Dark blue, Fully Conv. with LSTM.
 </p>
 
-<p align="center">
-In addition to this, we have performed several executions to analyze the effect of the learning rate upon the performance of the algorithm with modified rewards. The results are shown in Fig. 6.
-</p>
 
-<p align="center">
-  <img src="images/Learning_rate_comparison.png" width="500" alt="" />
-  <br />
-  <br />
-  Fig. 6: Different executions varying the learning rate. The executions corresponding to the green and blue curves where halted prematurely because the seemed rather unpromissing. On the other hand, the algorithm seems to perform well enough with a learning rate of 0.0001 and 0.00001. We cannot conclude which will behave better in the long run.
-</p>
+
+<h2 id="next-step-hacking-the-reward">Evaluation</h2>
+
+
+
+
+
+
+
 
 <h2 id="results-and-conclusions">Results and Conclusions</h2>
 
 <p style="text-align: justify">
-Of course, we have not achieved Deep Mind's performance, which is beyond our reach in terms of resources. More importantly, our work has been more about exploration, researching and learning rather than about constructing new techniques and pushing forward the state of the art. Along the way, we have introduced ourselves into the fascinating world of Reinforcement Learning ("the cherry on the top"), from which we did not know anything initially, or had very high-level understanding.
+Due to constraint of time and resources, we were not achieved Deep Mind's performance. We focused more on reading research paper, learning about RL agorithms, doing tutorials rather than constructing new techniques from beginning.  
 </p>
 
-<p style="text-align: justify">
-We have applied the concept of "reward hacking" to speed-up the learning of the agent with problem specific information. Of course, this is a double-edge sword since on the one hand we can enrich the otherwise sparse reward with domain-specific knowledge, avoiding the many trials-and-errors of less informed search; but on the other hand we have to manipulate the reward to include this domain knowledge, which can be very difficult, and loses a great deal of the appeal and generality of ready-to-go RL algorithms. It is our belief, however, that using RL alone to play StarCraft II will be very challenging and perhaps unfeasible with the current state of the art, unless it is combined with other technique, or used as a subsystem of a more complex artificial intelligence player.
+<h2> Journey </h2>
+<p style="text-align: justify"> In the quater long project, we came across several challenges and new ideas. This is a brief of our journey: One of our original course of actions was to use parsed replay data to train the agent using NNs to learn strategies. It would intake information about the state and output abstracted actions that the agent would perform. However, that was not realistic because we faced troubles parsing the data in the right way. Primarily, the initial data set of raw replays we found, the SC2LE dataset, was not encoded correctly for the updated version of SC2. Using sc2reader, we were able to correctly parse replay data only for raw replays that were saved before early 2016. We were able to collect slightly over 1,000 parsed replays amongst all 3 races using the sc2reader library. This however, took a huge portion of our time, and once we started working on implementing the NN it was already week 6. Due to the time constraint and the fact that we lacked a working agent, we did not have a concrete plan of how to map the actions returned by the replay data and those of the agent. At this point we decided to split the work, where some of us continued to implement a NN, while others began implementing a DQN implementation. 
+With the NN, we decided to make it Recurrent given the idea that an agent should learn what to do at specific states in the game based on previous states that happened. We tried to implement an LSTM RNN using Pytorch and also Tensorflow, but we ran into trouble when dealing with the dimensionality of the input since we had data that all had different number of states, ranging from 100 states in the game to 5000 states. We tried methods such as batching the data and padding the states with 0’s in order to input the same size of states per batch. We reached the point where the RNN was capable of producing a forward pass but unable to correctly perform  back propagation. Unfortunately, this was very late in the quarter (week 8) and our DQN implementation was working better, but still not fully. So in order to finish before the given deadline, we had to drop the RNN and focus all our efforts on finishing the agent using Q-Table, until we managed to get it to work. The time we had left to train it however, was not enough for it to learn fully. 
+
 </p>
 
-<p style="text-align: justify">
-In our experiments (somewhat limited because of our resources), we have found that the default learning rate (0.0001) in the algorithms we tested is indeed well chosen: bigger learning rates result in unstable learning problems while lower learning rates result in very slow learning. On the other hand, tweaking the reward to include domain specific knowledge has resulted in mixed results. While the performance seems to grow faster at the beginning, it stalls around 19. In the mini-game we chose, 19 turns out to be a quite critical score because enemies do not respawn until the first wave has been cleared out, which requires an efficient exploration technique.
-</p>
 
 <p style="text-align: justify">
-Overall, it was a fun and challenging project to learn about artificial intelligence. In the future we seek to keep learning about this topic and add our own contributions to the field, or apply it to other tasks. We also believe that RL has very promising real-world applications, like assistive robotics or automation and control.
+Overall, it was a fun and challenging project to learn about artificial intelligence. In the future, we plan to continue researching this field and learn more about it. 
 </p>
+
+<pstyle="text-align: justify"> Thank you <a href="https://faculty.engineering.ucdavis.edu/mccoy/">Professor Josh McCoy</a> for giving us a great introduction to world of AI. 
+ </p> 
 
 <h3 id="example-video-of-a-trained-agent">Example video of a trained agent</h3>
 <p><a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=uMiJt4UcZyo " target="_blank"><img align="center" src="http://img.youtube.com/vi/uMiJt4UcZyo/0.jpg" alt="RL Agents" width="240" height="180" border="10" /></a></p>

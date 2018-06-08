@@ -40,21 +40,21 @@
     </section>
 
     <section class="main-content">
-      <h1 id="dlai-2017---project-work-group-5-">ECS 170 project</h1>
 <h1 id="playing-starcraft-ii-with-reinforcement-learning">Playing StarCraft II with Reinforcement Learning</h1>
-<p>The Team is made up by:</p>
+<p>StarCraft2 Swaggers:</p>
 <img src="Team2.jpg" alt="he" />
 <table>
     <tr>
+      <td >Dolly Ye</td>
       <td >Shraddha Agrawal</td>
       <td >Aria Chang</td>
       <td >Axel A Hernandez</td>
-      <td >Dolly Ye</td>
+  
       <td >Rhys Li</td>
     </tr>
 </table>
 
-<p>This project was developed during the <a href="https://github.com/dr-jam/ECS170">ECS 170:Artificial Intelligence</a> Course at UC Davis, Spring 2018.</p>
+
 
 
 <h2 id="starcraft-ii">StarCraft II</h2>
@@ -124,31 +124,28 @@ The image below explains how SC2LE works combining StarCarft II API with Google 
 <p style="text-align: justify">
 The two important components of the envrionment are: 
 <ul>
-  <li> <strong> Mini-game maps </strong> 
-  <li> <strong> Replays </strong> 
+  <li> Mini-game maps 
+  <li> Replays 
 
 </p>
 
 <h3 id="objectives">Objectives</h3>
 
 <p style="text-align: justify">
-Playing the whole game is quite an ambitious goal that currently is only whithin the reach of scripted agents. However, the StarCraft II learning environment provides several challenges that are most appropriate to test the learning capabilities of an intelligent agent. 
-</p>
-<p>
-Our main focus was build order optimization for Terrans. As, No matter how good you are at combat or economy maximization, you cannot win a game without judicious selection of units, structures and buildings in Starcraft 2. Through our project we want to discuss the problem of build order in RTS games. Concretely, build order consists of finding concurrent action sequences constrained by unit dependencies and resource availability, such as creating a certain number of units and structures in the shortest amount of time possible.
+In Starcraft 2, no matter how good you are at combat or economy maximization, you cannot win a game without judicious selection of units, structures and buildings. We want to tackle the problem of build order optimization in StarCraft2. Concretely, build order consists of finding concurrent action sequences constrained by unit dependencies and resource availability, such as creating a certain number of units and structures in the shortest amount of time possible.
 
 </p>
 
-<h2 id="techniques">Techniques</h2>
 
-<h3 id="learning-curve">Learning Curve</h3>
+<h2 id="techniques">Background Knowledge</h2>
+
 
 <p style="text-align: justify">
-Before starting to train and write the code for the SC2 agents in pysc2 environment, we went through a series of <a href="https://medium.com/emergent-future/simple-reinforcement-learning-with-tensorflow-part-0-q-learning-with-tables-and-neural-networks-d195264329d0">tutorials</a>, which implement in <a href="https://pytorch.org/tutorials/beginner/deep_learning_60min_blitz.html">Pytorch</a>, <a href="https://pytorch.org/tutorials/beginner/data_loading_tutorial.html"> Data Extraction </a> and the different RL algorithms applied to the <a href="https://gym.openai.com/envs/">OpenAI GYM</a> environment.
+Before starting to train a SC2 agent in the PySC2 environment, we went through a series of <a href="https://medium.com/emergent-future/simple-reinforcement-learning-with-tensorflow-part-0-q-learning-with-tables-and-neural-networks-d195264329d0">tutorials</a>, which implement reinforcement learning agents using <a href="https://pytorch.org/tutorials/beginner/deep_learning_60min_blitz.html">Pytorch</a> and the <a href="https://gym.openai.com/envs/">OpenAI gym</a> environment.
 </p>
 
 <p style="text-align: justify">
-These were the some of the topics we went over: 
+Essential Algorithms: 
 </p>
 
 <ul>
@@ -168,14 +165,25 @@ These were the some of the topics we went over:
 <h3 id="a3c">Q-Learning</h3>
 
 <p style="text-align: justify">
+  Q(s,a) is equal to the summation of immediate reward after performing action a while in state s and the discounted expected future reward. It represents how good a certain action is in given state.
 
-Q-Learning is a popular reinforcement algorithm used in StarCraft II agent. We built our agent on top of Q-learning implementation: <a href="https://github.com/xhujoy/pysc2-agents"> one by steven brown</a>; and <a href="https://github.com/MorvanZhou/PyTorch-Tutorial/tree/master/tutorial-contents-notebooks"> by Maravn Zhou </a></p>
 
-<h3 id="a3c">Deep-Q-Learning</h3>
+  Q-learning agent seeks to maximize its total (future) reward by adding the maximum expected reward attainable from the future state to the reward in its current state.
+
+
+Here are some implementations of Q-learning agents: <a href="https://chatbotslife.com/building-a-smart-pysc2-agent-cdc269cb095d"> Steven Brown's</a> and <a href="https://github.com/MorvanZhou/PyTorch-Tutorial/tree/master/tutorial-contents-notebooks"> Morvan Zhou's </a></p>
+
+<h3 id="a3c">Deep Q-Network</h3>
 
 <p style="text-align: justify">
 
-D-Q-Learning is a popular reinforcement algorithm used in StarCraft II agent. We first spent time understanding this tutorial on how to use pytorch to train a DQN agent on the  <a href="https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html"> one by Adam Paszke</a>; and <a href="https://github.com/MorvanZhou/PyTorch-Tutorial/tree/master/tutorial-contents-notebooks"> by Maravn Zhou </a>. Deep Q network is built on one simple layer of Q-network.
+
+    DQN's main innovation over Q-learning:  It has two separate networks: an action network and a target network. The action network selects action, its parameters are trainable.The target network is a history version of the action network, its parameters are untrainable. It is updated infrequently– every C steps.The target network computes the loss for every action during training.
+    Why not use just use one network for both estimations? The issue is that at every step of training, the Q-network’s values shift, and if we are using a constantly shifting set of values to adjust our network values, then the value estimations can easily spiral out of control.  In order to make training more stable, the target network’s weights are fixed, and only periodically or slowly updated to the primary Q-networks values.
+
+
+
+Check out this tutorial on   <a href="https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html"> how to use PyTorch to train a DQN agent </a>.  
 </p>
 
 
@@ -238,7 +246,7 @@ It is our objective to experiment with Reinforcement Learning techniques and ana
 
 
 <p style="text-align: justify">
-Refine agent uses the PySC2 AI environment for an RL agent using a Q-Table from having a win rate of less than 20% to, eventually, a win rate of over 70%. We delineated from the other choices of ML models and resorted to building a comprehensive agent that learns as it plays against the built-in AI in real time. Compared to the refined agent which Steven Brown uses to achieve the 70%+ win rate, our agent uses the Q-Table actions of building tech lab, which allows production units to build advanced army units, and reactors, which “ lengthens the build queue by three slots and allows two units to be built simultaneously” (starcraft wikia). 
+Refined agent uses the PySC2 AI environment for an RL agent using a Q-Table from having a win rate of less than 20% to, eventually, a win rate of over 70%. We delineated from the other choices of ML models and resorted to building a comprehensive agent that learns as it plays against the built-in AI in real time. Compared to the refined agent which Steven Brown uses to achieve the 70%+ win rate, our agent uses the Q-Table actions of building tech lab, which allows production units to build advanced army units, and reactors, which “ lengthens the build queue by three slots and allows two units to be built simultaneously” (starcraft wikia). 
 
 
 </p>
@@ -256,7 +264,7 @@ Refine agent uses the PySC2 AI environment for an RL agent using a Q-Table from 
 
 
 <p style="text-align: justify">
-PYSC2 api provides critical information, such as reward and episode,  an agent gets after performing an action, which makes DQN especially suitable for the task. A Starcraft RL agent observes the current state of the environment and chooses an action, the environment transitions to a new state, and also returns a reward that indicates the consequences of the action.  We encode six pieces of information as our state: whether the player can move, where the player is located, supply depot count,barracks count, supply limit and army supply.We passed the state into the neural network, which, after training, would return an action that yields the highest expected reward. 
+PySC2 api provides critical information, such as reward and episode,  an agent gets after performing an action, which makes DQN especially suitable for the task. A Starcraft RL agent observes the current state of the environment and chooses an action, the environment transitions to a new state, and also returns a reward that indicates the consequences of the action.  We encode six pieces of information as our state: whether the player can move, where the player is located, supply depot count,barracks count, supply limit and army supply.We passed the state into the neural network, which, after training, would return an action that yields the highest expected reward. 
 
 </p>
 
@@ -296,9 +304,10 @@ With the NN, we decided to make it Recurrent given the idea that an agent should
 <p style="text-align: justify">
 Overall, it was a fun and challenging project to learn about artificial intelligence. In the future, we plan to continue researching this field and learn more about it. 
 </p>
-
+<p>This project was developed during the <a href="https://github.com/dr-jam/ECS170">ECS 170:Artificial Intelligence</a> Course at UC Davis, Spring 2018.</p>
 <pstyle="text-align: justify"> Thank you <a href="https://faculty.engineering.ucdavis.edu/mccoy/">Professor Josh McCoy</a> for giving us a great introduction to world of AI. 
  </p> 
+
 
 <h3 id="example-video-of-a-trained-agent">Example video of a trained agent</h3>
 <p><a href="http://www.youtube.com/watch?feature=player_embedded&amp;v=uMiJt4UcZyo " target="_blank"><img align="center" src="http://img.youtube.com/vi/uMiJt4UcZyo/0.jpg" alt="RL Agents" width="240" height="180" border="10" /></a></p>
